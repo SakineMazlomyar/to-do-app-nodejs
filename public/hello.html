@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/add-save-list.js"></script>
+    <script src="js/show-saved-list.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+  </head>
+  <body onload="showMySavedToDoList()">
+    <div id='saved-list'>
+    
+
+    </div>
+
+
+
+
+    <h1>Our To Do App!</h1>
+    <ul>
+    </ul>
+
+    <div>
+      <ul id="to-do">
+      </ul>
+      <span>Write Item name!</span>
+      <input type="text" id="item-info">
+      <button class='add-item' onclick="addItem()">add item</button>
+
+    </div>
+
+    <div style="margin-top: 3em;">
+
+      <h4>No space when you write the name of your list and no Swedish char!</h4>
+      <span>Write your list name!</span>
+      <input id='list-item-name' type="text">
+      <button onclick="saveMyList()"> save my list</button>
+  
+    </div>
+
+    <div style="margin-top: 5em;">
+      <span>Write your list name!</span>
+      <input type="text" id='giving-list-name'>
+      <button onclick="showMySavedToDoList()"> show my saved todo list</button>
+      <h1 id='list-name'></h1>
+      <ul id="show-choosen-list">
+      </ul>
+    </div>
+
+  </body>
+</html>
