@@ -4,10 +4,11 @@ const fs = require('fs');
 let app = express();
 app.use(bodyParser.json());
 
-
-
 //hello world
-app.get('/', (req,res)=>{ res.send('Hello World!')})
+app.get('/', (req,res)=>{ 
+  res.send('Hello World!')
+
+})
 
 //static files
 app.use('/static', express.static('public'));

@@ -3,27 +3,50 @@ let toDoList = []
 function addItem() {
   let text = document.getElementById('item-info');
   toDoList.push(text.value)
-  showAddedItems()
-
+  let item = document.createElement('li');
+  item.innerText = text.value;
+  document.getElementById('to-do').appendChild(item);
+  
+  deleteItem(toDoList.indexOf(text.value));
+  console.log(toDoList.indexOf(text.value))
+  text.value ='';
+  text.focus();
+  
 
 }
 
-function showAddedItems() {
-  let item
-  for(let oneToDo of toDoList) {
+function deleteItem(index) {
+  var deleteButton = document.createElement('button');
+  deleteButton.innerHTML = 'remove item'
+  document.getElementById('to-do').appendChild(deleteButton);
+  deleteButton.onclick = ()=>{
     
-    item = document.createElement('li');
-    item.innerHTML = oneToDo
-    item.setAttribute('class', 'item')
+    toDoList.splice(index, 1);
+    document.getElementById('to-do').innerHTML = '';
+    rebuildItems()
   }
-
-  document.getElementById('to-do').appendChild(item)
+ 
 }
+  
+function rebuildItems(){
+  for(let value of toDoList) {
+    let itemtagg = document.createElement('li');
+    itemtagg.innerText = value;
+    document.getElementById('to-do').appendChild(itemtagg);
+    deleteItem()
+  }
+  
+}
+
+
+
+
 //save the todo list
 async function saveMyList() {
   let listname = document.getElementById('list-item-name');
-    const data = { listname: listname.value, todolist:toDoList};
-    const response = await fetch('/handlers/save', 
+  
+    const data = {listid:Math.floor(Math.random()*100000), listname: listname.value, todolist:toDoList};
+    await fetch('/handlers/save', 
       {
       method: 'POST',
       body: JSON.stringify(data),
@@ -34,6 +57,8 @@ async function saveMyList() {
       
         return res.json().then((savedlist)=>{
           console.log(savedlist)
+          location.reload()
+          alert('You saved a new list!')
         })
   
 
