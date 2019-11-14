@@ -18,6 +18,8 @@ require('./handlers/post')(app, fs);
 require('./handlers/getAll')(app,fs);
 //delete handler
 require('./handlers/delete')(app,fs);
+//update handler
+require('./handlers/update')(app,fs);
 
 let server = app.listen(8080, ()=>{
   console.log(server.address().port)

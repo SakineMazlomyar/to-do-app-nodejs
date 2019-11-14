@@ -32,21 +32,23 @@ let ul = document.createElement('ul');
       let itemTagg = document.createElement('li');
       let deleteButton = document.createElement('button');
       itemTagg.innerHTML = value
-      deleteButton.innerHTML = 'Remove'
+      //deleteButton.innerHTML = 'Remove'
       ul.appendChild(itemTagg)
       ul.appendChild(deleteButton)
       deleteButton.onclick = ()=>{
         //list.splice(index,1);
-        console.log(index, "here is the index")
-        console.log(listid, 'id')
-      
+       
+        itemTagg.style.color = 'red';
+        itemTagg.setAttribute('delete','yes')
         
+        checkForDelete(index,value, listid)
+      
       }
 
     }
-    console.log(list, "here is data 3")
+    
   ul.setAttribute('idd',listid)
-  console.log(ul.getAttribute('idd'));
+
 
     document.getElementById('saved-list').appendChild(listname);
     document.getElementById('saved-list').appendChild(ul)
@@ -55,9 +57,45 @@ let ul = document.createElement('ul');
     removeButton.onclick = ()=>{
       removeOneList(listid, list)
     } 
+    let updateButton = document.createElement('button');
+    updateButton.innerHTML = 'Save My Changes';
+    updateButton.onclick = ()=>{
+      updateOnelist()
+    } 
     document.getElementById('saved-list').appendChild(removeButton);
+    document.getElementById('saved-list').appendChild(updateButton);
 
 
+}
+let choosenDataToUpdate = []
+function checkForDelete(index,values, listid) {
+  
+  if(choosenDataToUpdate.length<= 0){
+    let testt = {};
+    testt.id = listid;
+    testt.data = []
+    testt.data.push(values)
+    choosenDataToUpdate.push(testt)
+  } else {
+
+    for(let value of choosenDataToUpdate) {
+      if(value.id === listid) {
+        value.data.push(values)
+
+      } else {
+        choosenDataToUpdate = []
+        let testtt = {};
+        testtt.id = listid;
+        testtt.data = []
+        testtt.data.push(index)
+        choosenDataToUpdate.push(testtt)
+
+      }
+    }
+
+  }
+    console.log(choosenDataToUpdate)
+  
 }
 
 function removeOneList(listid) {
@@ -71,5 +109,28 @@ function removeOneList(listid) {
     console.log(error)
   })
   
-  
 } 
+
+function updateOnelist() {
+  const data = choosenDataToUpdate
+  fetch('/handlers/update', {
+
+    method:'PUT',
+    body: JSON.stringify(data),
+    headers:{
+    'Content-Type':'application/json'
+  }
+  })
+  .then((result)=>{
+    result.json().then((res)=>{
+      console.log(res, "here is response");
+      location.reload();
+
+      
+    })
+  }).catch((error)=>{
+    console.log(error)
+  })
+
+  
+}
