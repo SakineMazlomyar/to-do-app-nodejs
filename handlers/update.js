@@ -5,10 +5,7 @@ module.exports = function(app,fs){
         let data = await  = req.body;
         fs.readFile('./handlers/databas.json',(error, dat)=>{
           var json = JSON.parse(dat)
-        
-      
 
-        
          for(let [index, value] of json.entries()) {
              if(data[0].id === value.listid){
               console.log(json, 'hh')

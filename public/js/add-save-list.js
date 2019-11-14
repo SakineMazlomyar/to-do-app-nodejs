@@ -8,22 +8,20 @@ function addItem() {
   document.getElementById('to-do').appendChild(item);
   
   deleteItem(toDoList.indexOf(text.value));
-  console.log(toDoList.indexOf(text.value))
   text.value ='';
   text.focus();
   
-
 }
 
 function deleteItem(index) {
   var deleteButton = document.createElement('button');
   deleteButton.innerHTML = 'remove item'
   document.getElementById('to-do').appendChild(deleteButton);
-  deleteButton.onclick = ()=>{
-    
-    toDoList.splice(index, 1);
-    document.getElementById('to-do').innerHTML = '';
-    rebuildItems()
+  deleteButton.onclick = ()=> {
+
+  toDoList.splice(index, 1);
+  document.getElementById('to-do').innerHTML = '';
+  rebuildItems()
   }
  
 }
@@ -44,26 +42,27 @@ function rebuildItems(){
 //save the todo list
 async function saveMyList() {
   let listname = document.getElementById('list-item-name');
-  
-    const data = {listid:Math.floor(Math.random()*100000), listname: listname.value, todolist:toDoList};
-    await fetch('/handlers/save', 
+  const data = {listid:Math.floor(Math.random()*100000), listname: listname.value, todolist:toDoList};
+   let response =  await fetch('/handlers/save', 
       {
       method: 'POST',
       body: JSON.stringify(data),
       headers:{
       'Content-Type':'application/json'
     },
-    }).then((res)=>{
-      
-        return res.json().then((savedlist)=>{
-          console.log(savedlist)
-          location.reload()
-          alert('You saved a new list!')
-        })
-  
-
-    }).catch((err)=>{
-      console.log(err)
     })
+    console.log(response, "here is the res");
+    if(response.status !== 200) {
+      console.error(response.statusText)
+      alert('Coult not save your list!')
+    } else {
+      let responseToJson = await response.json();
+      addNewList(responseToJson )
 
+    }
+}
+
+function addNewList(newList) { 
+  console.log(newList); 
+  location.reload()
 }

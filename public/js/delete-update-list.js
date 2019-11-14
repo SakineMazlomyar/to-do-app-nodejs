@@ -1,17 +1,15 @@
 //show the todo list based on name
 async function showMySavedToDoList() {
-  await fetch('/handlers/getAll',{method: 'GET'})
- .then((result)=>{
-   
-   result.json().then((dat)=>{
-     showAllSavedList(dat)
-   }) 
- })
- .catch((error)=>{
-   console.log(error)
- })
+  let allSavedLists = await fetch('/handlers/getAll',{method: 'GET'});
+  if(allSavedLists.status !== 200){
+    console.error('Could not get all lists!')
+  } else {
+    let allSavedListsToJson = await allSavedLists.json();
+    showAllSavedList(allSavedListsToJson)
+  }
 
 }
+
 
 
 function showAllSavedList(lists){
